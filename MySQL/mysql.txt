@@ -1,0 +1,120 @@
+-- 1.用 SQL 语句，建立如下所示的表 cqupt_student
+create table cqupt_student(
+    studentid varchar(10),
+    name varchar(20),
+    sex varchar(2),
+    age integer,
+    Free DECIMAL(10,2),
+    address varchar(50),
+    memo varchar(300)
+);
+-- 2.用 Create Table 语句建表 CourseAa
+create table courseAa(
+    Aa1 varchar(20),
+    Aa2 integer,
+    Aa3 decimal(10)
+);
+alter table courseAa rename CourseAa;-- rename table courseAa to CourseAa
+-- 3.用Create Table 语句建表 ChooseBb
+create table chooseBb(
+    Bb1 varchar(30),
+    Bb2 integer,
+    Bb3 decimal(6)
+);
+-- 4.用 Alter Table 语句更新表 ChooseBb，添加一个属性名 Bb4，类型 Varchar,长度 20,完整性约束设为非空值，缺省值设为字符“系统测试值”。
+alter table chooseBb add Bb4 varchar(20) not null default '系统测试值';
+desc chooseBb;
+-- 5.用 Alter Table 语句更新表 ChooseBb，添加一个属性名 Bb5，类型 Varchar长度 10，完整性约束设为主码。
+alter table chooseBb add Bb5 varchar(10) primary key;
+-- 用 Create View 语句建立一个视图 View_Choosebb,生成的视图属性名（View_bb1，View_bb2，view_bb3）, 其中 View_bb1 对应于基表 ChooseBb的 Bb1、View_bb2 对应于基表 ChooseBb 的 Bb4、view_bb3 对应于基表ChooseBb 的 Bb5。
+create or replace view View_Choosebb as select Bb1 as View_bb1,Bb4 as View_bb2,Bb5 as View_bb3 from choosebb;
+-- 7.用 Drop View 语句删除视图 View_Choosebb。
+drop view view_choosebb;
+-- 8.用 Create Index 语句对表 ChooseBb 的 Bb2 属性建立一个升序索引，索引名 Index_bb2。 用 Create Index 语句对表 ChooseBb 的 Bb4 属性建立一个降序索引，索引名 Index_bb4。
+create index index_bb2 on choosebb(Bb2 asc);
+create index index_bb4 on choosebb(Bb4 desc);
+-- 9.用 Drop Index 语句删除索引 Index_bb2
+alter table choosebb drop index index_bb2;
+-- 10.用 Create Table 语句建立 test 表
+create table test(
+    name varchar(20),
+    age int,
+    score numeric(10,2),
+    address varchar(60)
+);
+-- 11.用 INSERT 语句对表 test,插入如下 6 条记录：
+insert into test values ('赵一',20,580.00,'重邮宿舍12-3-5'),
+                        ('钱二',19,540.00,'南福苑5-2-9'),
+                        ('孙三',21,555.50,'学生新区21-5-15'),
+                        ('李四',22,505.00,'重邮宿舍8-6-22'),
+                        ('周五',20,495.50,'学生新区21-4-8'),
+                        ('吴六',19,435.00,'南福苑2-5-12');
+-- 12再用 Create Table 语句建立 test_temp 表
+create table test_temp(
+    name varchar(20),
+    age int,
+    score numeric(10,2),
+    address varchar(60)
+);
+-- 13.用 INSERT 语句对表 test_temp,插入如下 3 条记录
+insert into test_temp values ('郑七',21,490.50,'重邮宿舍11-2-1'),
+                        ('张八',20,560.00,'南福苑3-3-3'),
+                        ('王九',10,515.00,'学生新区19-7-1');
+-- 14.用 INSERT INTO ... SELECT ... FROM 语句，将 test_temp 表中的数据，插入到 test 表中。
+insert into test select * from test_temp;
+-- 15.用 UPDATE 语句将 test 表中年龄小于等于 20 的数据，将成绩更新为原来的成绩加 5 分。
+update test set score=score+5 where age<=20;
+-- 16.用 UPDATE 语句将 test 表中居住在南福苑所有学生的年龄减少 1 岁
+update test set age=age-1 where address like '南福苑%';
+-- 17.用 DELETE 语句将 test 表中年龄大于等于 21 并且成绩大于等于 500 的学生数据删除掉。
+delete from test where age>=21 and score >=500;
+-- 18.用 DELETE 语句将 test 表中成绩小于 550 并且居住在重邮宿舍的学生数据删除掉。
+delete from test where score<550 and address like '重邮宿舍%';
+-- 19用 Create Table 建立 Student 表，表结构如下所示
+create table Student(
+    SNO varchar(20),
+    Name varchar(10),
+    Age integer,
+    College varchar(30)
+);
+-- 20用 Create Table 建立 Course 表，表结构如下所示
+create table Course(
+    CourseID varchar(15),
+    CourseName varchar(30),
+    CourseBeforeID varchar(15)
+);
+-- 21.用 Create Table 建立 Choose 表，表结构如下所示：
+create table Choose(
+    SNO varchar(20),
+    CourseID varchar(30),
+    Score decimal(5,2)
+);
+-- 22.用 INSERT 语句向 Student 表中插入 3 个元组：
+insert into Student values ('S00001','张三',20,'计算机学院'),('S00002','李四',19,'通信学院'),('S00003','王五',21,'计算机学院');
+-- 23用 INSERT 语句向 Course 表中插入 3 个元组
+insert into Course values('C1','计算机引论',null),('C2','C语言','C1'),('C3','数据结构','C2');
+-- 24.用 INSERT 语句向 Choose 表中插入 7 个元组：
+insert into Choose values('S00001','C1',95),('S00001','C2',80),('S00001','C3',84),('S00002','C1',80),('S00002','C2',85),('S00003','C1',78),('S00003','C3',70);
+-- 25.用 SELECT 语句，查询计算机学院学生的学号和姓名。
+select SNO,name from student where College='计算机学院';
+-- 26.用 SELECT 语句的 between…and…表示查询条件，查询年龄在 20~23 岁的学生信息。
+select * from student where Age between 20 and 23;
+-- 27.用 SELECT 语句的 COUNT()聚集函数，统计 Student 表中学生总人数。
+select count(*) from student;
+-- 28.分别用 SELECT 语句的 max()、min()、sum()、avg()四个聚集函数，计算Choose 表中 C1 课程的最高分、最低分、总分、平均分。
+select max(Score) from Choose where CourseID='C1';
+select min(Score) from Choose where CourseID='C1';
+select sum(Score) from Choose where CourseID='C1';
+select avg(Score) from Choose where CourseID='C1';
+-- 29.用 SELECT 语句对空值(NULL)的判断条件，查询 Course 表中先修课称编号为空值的课程编号和课程名称。
+select CourseID,CourseName from course where CourseBeforeID is null;
+-- 30.用 SELECT 语句的连接查询，查询学生的学号、姓名、选修的课程名及成绩。
+select student.sno,student.name,course.coursename,choose.score from student,course,choose where student.sno=choose.sno and course.CourseID=Choose.CourseID;
+-- 31.用 SELECT 的存在量词 EXISTS，查询与“张三”在同一个学院学习的学生信息
+select * from student a where exists (select * from student b where Name = '张三' and a.college=b.college);
+-- 32.用 SELECT 语句的嵌套查询，查询选修 C1 课程的成绩低于“张三”的学生的学号和成绩。
+select a.SNO,aa.Score from student a,choose aa where aa.SNO=a.SNO and aa.CourseID='C1' and aa.Score<(select bb.Score from choose bb,student b where bb.SNO=b.SNO and b.Name='张三' and bb.CourseID='C1');
+-- 33.用 SELECT 语句的组合查询(UNION)，查询选修了 C1 课程或者选修了 C3课程的学生学号。
+select s.SNO from (select * from choose where CourseID='C1' union select * from choose where CourseID='C3') s;
+-- 34.用 SELECT 语句的组合查询(UNION)与 DISTINCT 短语，查询选修了 C1 课程或者选修了 C3 课程的学生学号，并取消重复的数据。
+select distinct sn.SNO from (select * from choose where CourseID='C1' UNION select * from choose where CourseID='C3') sn;
